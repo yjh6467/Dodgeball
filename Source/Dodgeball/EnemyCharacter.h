@@ -10,25 +10,36 @@ UCLASS()
 class DODGEBALL_API AEnemyCharacter : public ACharacter
 {
 	GENERATED_BODY()
+private:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LookAt, meta = (AllowPrivateAccess = "true"))
+	class ULookAtActorComponent* LookAtActorComponent;
 
 public:
-	// Sets default values for this character's properties
+
 	AEnemyCharacter();
 
-	void LookAtActor(AActor* TargetActor);
-	bool CanSeeActor(const AActor* TargetActor) const;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LookAt, meta = (AllowPrivateAccess = "true"))
-	USceneComponent* SightSource;
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+protected:
+
+	virtual void BeginPlay() override;
+
+	void ThrowDodgeball();
+
+	bool bCanSeePlayer = false;
+
+	bool bPreviousCanSeePlayer = false;
+
+	FTimerHandle ThrowTimerHandle;
+
+	float ThrowingInterval = 2.f;
+	float ThrowingDelay = 0.5f;
+
+	//The class used to spawn a dodgeball object
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Dodgeball)
+	TSubclassOf<class ADodgeballProjectile> DodgeballClass;
+
 
 };

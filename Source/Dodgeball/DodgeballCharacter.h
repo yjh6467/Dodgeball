@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "HealthInterface.h"
 #include "DodgeballCharacter.generated.h"
 
 class USpringArmComponent;
@@ -16,7 +17,7 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class ADodgeballCharacter : public ACharacter
+class ADodgeballCharacter : public ACharacter, public IHealthInterface
 {
 	GENERATED_BODY()
 
@@ -27,6 +28,8 @@ class ADodgeballCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
+
+	class UHealthComponent* HealthComponent;
 
 
 public:
@@ -40,6 +43,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* IA_Jump;
+
+	virtual void OnDeath_Implementation() override;
 
 protected:
 
