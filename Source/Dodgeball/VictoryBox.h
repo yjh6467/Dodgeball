@@ -14,6 +14,8 @@ class DODGEBALL_API AVictoryBox : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AVictoryBox();
+
+	UFUNCTION()
 	void OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:

@@ -39,7 +39,7 @@ void AVictoryBox::OnBeginOverlap(class UPrimitiveComponent* OverlappedComp, clas
 {
 	if(Cast<ADodgeballCharacter>(OtherActor))
 	{
-		UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, true);
+		UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
 	}
 }
 

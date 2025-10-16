@@ -1,22 +1,20 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "DodgeballCharacter.h"
-#include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Controller.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "InputActionValue.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "GameFramework/Controller.h"
 #include "InputMappingContext.h"
-#include "InputActionValue.h"
 #include "InputAction.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "HealthComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "DodgeballPlayerController.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -119,5 +117,19 @@ void ADodgeballCharacter::Look(const FInputActionValue& Value)
 
 void ADodgeballCharacter::OnDeath_Implementation()
 {
-	UKismetSystemLibrary::QuitGame(this, nullptr, EQuitPreference::Quit, true);
+	ADodgeballPlayerController* PlayerController = Cast<ADodgeballPlayerController>(GetController());
+	if (PlayerController != nullptr)
+	{
+		PlayerController->ShowRestartWidget();
+	}
 }
+
+void ADodgeballCharacter::OnTakeDamage_Implementation()
+{
+	ADodgeballPlayerController* PlayerController = Cast<ADodgeballPlayerController>(GetController());
+	if (PlayerController != nullptr)
+	{
+		PlayerController->UpdateHealthPercent(HealthComponent->GetHealthPercent());
+	}
+}
+
